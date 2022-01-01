@@ -5,6 +5,15 @@ I have made this public incase anyone wants to see how I run bzfs instances.  I 
 ## How to use this repository
 * create a new user, and a new home directory (exmaple. /home/bzflag for user bzflag)
 * clone this repo directly into the users' home folder (example in /home/bzflag)
+  * if you use the usual adduser command, then the homedir that's created will not be empty
+  * use the lower level useradd commands and then manually make a new blank homedir, then you can 'git clone' straight into that directory
+    * this is probably the best option. the new user will not have a password at all, will never be able to log in, and can't use any sudo commands so is a pretty restricted user
+  * if you need to use adduser for whatever reason, then the new homedir will have files (.bash* etc.), so you can't just git clone into that directory. in this case:
+    * cd ~/
+      * make sure you are logged in as this new user, and you are in that users home directory
+    * git clone <repourl> /tmp/tmprepo
+    * cp -rf /tmp/tmprepo/.git ~/
+    * git checkout -f main
 * this will give you the following layout:
   * ~/bin
     * where all your server startup scripts will reside

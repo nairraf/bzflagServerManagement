@@ -1,0 +1,35 @@
+# ignore all files in the root by default (Since this is a home dir)
+*
+
+# include just these root files
+!.gitignore
+!Readme.md
+
+# allow files in subdirectories to be overridden using not logic (!some/file)
+# without this you can't include files in subdir's, even with !full/path/file.whatever
+# as it seems the above exclude everything (*) takes precedence
+# you will still have to give paths to files/directories to include them
+!*/
+
+# always exclude these subdir's to be safe - we never want them in our source tree
+.vscode*/*
+.ssh/*
+.cahe/*
+src/*
+build/*
+temp/*
+# i compile, make and make install bzfs instances in their own foler per version for simple upgrades/rollback (example --prefix /home/bzflag/v2.4.22)
+# always exclude these
+v2*/*
+
+#include these specific subdirs/files
+!bin/srvctrl.sh
+!bin/example.sh
+!recordings/empty
+!pid/empty
+!maps/*
+!logs/empty
+!config/groups
+!config/*.conf
+!config/example/*.conf
+!config/example/vars

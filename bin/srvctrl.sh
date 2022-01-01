@@ -51,19 +51,23 @@ getstatus() {
     if test -f "$PIDDIR/$CURSRV.gpid"
     then
         GPID=`cat $PIDDIR/$CURSRV.gpid`
-        # exit normally if GPID is running, exit with error if not running
-        # we must use GPID's as every time a map is changed the bzfs pid exits and restarts
-        # the GPID remains the same as bzfs is a child to the shell script (which contains the loop)
-        status=`pgrep -g $GPID`
-        if [ ! -z "$status" ] # if status is not empty - meaning we found details for the running GPID
+        if [ ! -z "$GPID" ] # make sure that there is data in the gpid file
         then
-            echo "  Server: $CURSRV is running (GPID: $GPID)"
-            return 0
-        else
-            echo "  Server: $CURSRV is NOT running (GPID: $GPID)"
-            return 1
+            # exit normally if GPID is running, exit with error if not running
+            # we must use GPID's as every time a map is changed the bzfs pid exits and restarts
+            # the GPID remains the same as bzfs is a child to the shell script (which contains the loop)
+            status=`pgrep -g $GPID`
+            if [ ! -z "$status" ] # if status is not empty - meaning we found details for the running GPID
+            then
+                echo "  Server: $CURSRV is running (GPID: $GPID)"
+                return 0
+            else
+                echo "  Server: $CURSRV is NOT running (GPID: $GPID)"
+                return 1
+            fi
         fi
     fi
+    # there is no GPID file, and/or the file is empty
     echo "  Server: $CURSRV is NOT running (GPID: NULL)"
     return 1
 }

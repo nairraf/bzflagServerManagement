@@ -71,18 +71,23 @@ srvctrl.sh start example myotherserver yetanother
     * common.conf
       * this is the bzflag configuration that is common between all mapchange configurations. anything that is not map specific should go in the common.conf file. the server script (like example.sh) combines the common.conf, with the corresponding "active" map specific configuration and than starts up the bzfs instance with that combined config
       * note the use of template variables. the server script (example.sh) replaces these template values with the corresponding variables
-    * mapchange.conf
-      * this is the mapchange plugin configuration make sure the paths are correct for whereever you installed things.
+    * plugins.conf
+      * this is the plugin configuration make sure the paths are correct for whereever you installed things.
     * mapchange.out
-      * the mapchange plugin creates this file
-    * tmp.conf
+      * the mapchange plugin manages this file
+      * example.sh reads the contents of this file to determine the next map the server should be configured with
+    * tmp
       * the server scipt (example.sh) creates this file. this is the fully assembled config file that is created. This is the common.conf file, and the active map conf file combined with all template variables replaced. 
       * This is the file that the bzfs server uses when it starts
     * vars
       * any server specific bzfs server variables will go here
   * config/*map*.conf
     * map specific configuration files
-    * examples for ducati (ducati.conf), and hix (hix.conf)       
+    * examples for ducati (ducati.conf) are given
+    * for worlds with a custom map, all you have to do is add an entry in config/maplist in the format of *MapDisplayName* *MapName*
+      * *MapDisplayName* is the name players have to type in: /mapchange *MapDisplayName*
+      * *MapName* is the name of the world that is searched for in the maps directory. this is case sensitive so make sure this matches the actual mapname. All maps should use the .bzw extension
+      * see HiX for an example       
     * note the use of template variables. the server script (example.sh) replaces these template values with the corresponding variables (-publictitle uses __SERVERTITLE__ mostly in map specific configs)
     * the config file corresponding with the active map will be combined with the server's common.conf. the server script (example.sh) takes care of this for you.
 

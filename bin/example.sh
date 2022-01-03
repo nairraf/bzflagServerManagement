@@ -16,13 +16,14 @@
 # Configuration
 #
 ROOT=~/
+MAPDIR=$ROOT/maps
 CONFDIR=$ROOT/config
 SRVCONFDIR=$CONFDIR/example
 OUTFILE=$SRVCONFDIR/mapchange.out          			# base of configuration filename and output file
 SLEEPTIME=2.5                                   	# Time in seconds to sleep between restarts
 BZFS=$ROOT/v2.4.22/bin/bzfs		    				# bzflag server binary
 TMPCONF=$SRVCONFDIR/tmp
-SERVERTITLE="Example Server :: ActiveMap -"	# don't put forward slashes (/) in here!
+SERVERTITLE="Example Server :: ActiveMap -"			# don't put forward slashes (/) in here!
 SERVERPORT="5160"
 DNSNAME="my.server.dns.name"
 PUBLICKEY="PASTEyourSECRETkeyHERE"					# your list server key
@@ -31,8 +32,36 @@ PUBLICKEY="PASTEyourSECRETkeyHERE"					# your list server key
 
 # Loop forever - display name of the selected configuration
 while cat $OUTFILE; do
+	# build the config for this runtime
+	cat $SRVCONFDIR/common.conf >$TMPCONF
+	
+	OUTMAP=$(cat $OUTFILE)
+	if [ -z "$OUTMAP" ]
+	then
+		OUTMAP="HiX"
+	fi
+
+	case "$OUTMAP" in
+    Ducati)
+        cat "$CONFDIR/ducati.conf" >>$TMPCONF
+        ;;
+	DucatiMini)
+		cat "$CONFDIR/ducatimini.conf" >>$TMPCONF
+        ;;
+	DefaultDucatiMini)
+		cat "$CONFDIR/defaultducatimini.conf" >>$TMPCONF
+        ;;
+    *)
+		echo "Activating $OUTMAP"
+		echo "" >>$TMPCONF # make sure the next command goes on a fresh line
+        echo "-world $MAPDIR/$OUTMAP.bzw" >>$TMPCONF
+        ;;
+    esac
+	
+	echo "" >>$TMPCONF # make sure the next command goes on a fresh line
+	echo "-publictitle \"$SERVERTITLE $OUTMAP\"" >>$TMPCONF
+
 	# replace our template variables with our desired text
-	cat $SRVCONFDIR/common.conf $(cat $OUTFILE) >$TMPCONF
 	# since the paths contain forward slashes we can't use the normal sed delimeter (s/.../.../g)
 	# we change that to a pipe '|' so that we don't have to escape everything to death
 	sed -i "s|__ROOT__|$ROOT|g" $TMPCONF

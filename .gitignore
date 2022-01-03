@@ -21,6 +21,8 @@ temp/*
 # i compile, make and make install bzfs instances in their own foler per version for simple upgrades/rollback (example --prefix /home/bzflag/v2.4.22)
 # always exclude these
 v2*/*
+src
+src/*
 
 #include these specific subdirs/files
 !bin/srvctrl.sh
@@ -31,5 +33,9 @@ v2*/*
 !logs/empty
 !config/groups
 !config/*.conf
+!config/banfile
+!config/maplist
+!config/*.json
+!config/example/mapchange.out
 !config/example/*.conf
 !config/example/vars

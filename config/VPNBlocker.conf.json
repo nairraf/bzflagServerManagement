@@ -1,0 +1,12 @@
+{
+  "allow_vpn": "none",
+  "max_bzid": 57863,
+  "services": [
+    {
+      "type": "iphub",
+      "key": "PastYourKeyHere"
+    }
+  ],
+  "block_list_url": "",
+  "report_url": ""
+}
